@@ -8,6 +8,7 @@ const WorkoutForm = () => {
   const [load, setLoad] = useState('');
   const [reps, setReps] = useState('');
   const [error, setError] = useState(null);
+  const [emptyFields, setEmptyFields] = useState<String[]>([]);
 
   const handleSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -24,14 +25,16 @@ const WorkoutForm = () => {
 
     const json = await response.json();
 
-    if (!response.ok) {
+    if (!response.ok) { 
       setError(json.error);
+      setEmptyFields(json.emptyFields);
     }
     if (response.ok) {
       setTitle('');
       setLoad('');
       setReps('');
       setError(null);
+      setEmptyFields([]);
       dispatch({type: 'CREATE_WORKOUT', payload: json})
       console.log('new workout added', json);
     }
@@ -46,6 +49,7 @@ const WorkoutForm = () => {
         type="text"
         onChange={(e) => setTitle(e.target.value)}
         value={title}
+        className={emptyFields.includes('title') ? styles.fieldError : ''}
       />
 
       <label>Load (in KG)</label>
@@ -53,6 +57,7 @@ const WorkoutForm = () => {
         type="number"
         onChange={(e) => setLoad(e.target.value)}
         value={load}
+        className={emptyFields.includes('load') ? styles.fieldError : ''}
       />
 
       <label>Reps</label>
@@ -60,6 +65,7 @@ const WorkoutForm = () => {
         type="number"
         onChange={(e) => setReps(e.target.value)}
         value={reps}
+        className={emptyFields.includes('reps') ? styles.fieldError : ''}
       />
 
       <button onClick={handleSubmit}>Add Workout</button>
