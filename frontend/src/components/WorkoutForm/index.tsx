@@ -7,7 +7,7 @@ const WorkoutForm = () => {
   const [reps, setReps] = useState('');
   const [error, setError] = useState(null);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
 
     const workout = {title, load, reps};
@@ -28,13 +28,14 @@ const WorkoutForm = () => {
     if (response.ok) {
       setTitle('');
       setLoad('');
+      setReps('');
       setError(null);
       console.log('new workout added', json);
     }
   }
 
   return (
-    <form className={styles.create}>
+    <form className={styles.createForm}>
       <h3>Add a New Workout</h3>
 
       <label>Excersise Title:</label>
@@ -59,6 +60,7 @@ const WorkoutForm = () => {
       />
 
       <button onClick={handleSubmit}>Add Workout</button>
+      {error && <div className={styles.errorMsg}>{error}</div>}
     </form>
   )
 }
