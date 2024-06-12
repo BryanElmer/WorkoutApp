@@ -29,7 +29,7 @@ const Home = () => {
     };
 
     fetchWorkouts();
-  }, []); // 2nd arg if empty only render once when first rendered
+  }, [dispatch]); // 2nd arg if empty only render once when first rendered
 
   return (
     <div className={styles.home}>
