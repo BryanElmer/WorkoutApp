@@ -1,14 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Workout } from "../../types/types";
+import { useWorkoutsContext } from "@/hooks/useWorkoutsContext";
 
 import WorkoutDetails from "../WorkoutDetails/index";
 import WorkoutForm from "../WorkoutForm/index";
 import styles from "./index.module.css";
 
 const Home = () => {
-  const [workouts, setWorkouts] = useState<Workout[] | null>(null);
+  const {state, dispatch} = useWorkoutsContext();
   const apiUrl = process.env.API_URI;
 
   useEffect(() => {
@@ -18,7 +19,7 @@ const Home = () => {
         const json = await response.json();
       
         if (response.ok) {
-          setWorkouts(json);
+          dispatch({type: 'SET_WORKOUTS', payload: json})
         } else {
           console.error('Failed to fetch workouts.');
         }
@@ -33,7 +34,7 @@ const Home = () => {
   return (
     <div className={styles.home}>
       <div className={styles.workouts}>
-        {workouts && workouts.map((workout) => (
+        {state.workouts && state.workouts.map((workout) => (
           <WorkoutDetails key={workout._id} workout={workout} />
         ))}
       </div>
