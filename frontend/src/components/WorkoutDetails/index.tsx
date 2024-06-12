@@ -1,6 +1,10 @@
 import { Workout } from "../../types/types";
-import styles from "./index.module.css";
 import { useWorkoutsContext } from "@/hooks/useWorkoutsContext";
+
+import { formatDistanceToNow } from 'date-fns/formatDistanceToNow';
+
+import styles from "./index.module.css";
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 
 interface WorkoutDetailsProps {
   workout: Workout;
@@ -25,8 +29,10 @@ const WorkoutDetails:React.FC<WorkoutDetailsProps> = ({ workout }) => {
       <h4>{workout.title}</h4>
       <p><strong>Load (kg): </strong>{workout.load}</p>
       <p><strong>Reps: </strong>{workout.reps}</p>
-      <p>{workout.createdAt}</p>
-      <span onClick={handleClick}>delete</span>
+      <p>{formatDistanceToNow(new Date(workout.createdAt), { addSuffix: true })}</p>
+      <span onClick={handleClick}>
+        <DeleteOutlinedIcon />
+      </span>
     </div>
   )
 }
