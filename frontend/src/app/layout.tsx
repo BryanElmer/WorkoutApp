@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { WorkoutsContextProvider } from '../context/WorkoutContext';
+import { AuthContextProvider } from "../context/AuthContext";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -24,9 +25,11 @@ export default function RootLayout({
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
       </head>
       <body className={inter.className}>
-        <WorkoutsContextProvider>
-          { children }
-        </WorkoutsContextProvider>
+        <AuthContextProvider>
+          <WorkoutsContextProvider>
+            { children }
+          </WorkoutsContextProvider>
+        </AuthContextProvider>
       </body>
     </html>
   );
