@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useReducer, ReactNode, Dispatch, act } from 'react';
+import React, { createContext, useReducer, ReactNode, Dispatch } from 'react';
 import { Workout } from '@/types/types';
 
 // Define the state and action types

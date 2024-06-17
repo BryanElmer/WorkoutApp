@@ -5,3 +5,9 @@ export type Workout = {
   load: number,
   createdAt: Date
 };
+
+export type User = {
+  _id: string,
+  email: string,
+  password: string
+};
