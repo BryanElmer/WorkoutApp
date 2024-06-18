@@ -9,5 +9,5 @@ export type Workout = {
 export type User = {
   _id: string,
   email: string,
-  password: string
+  token: string
 };
