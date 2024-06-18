@@ -8,7 +8,7 @@ interface State {
   workouts: Workout[] | null;
 }
 
-type Action = { type: 'SET_WORKOUTS'; payload: Workout[] } | 
+type Action = { type: 'SET_WORKOUTS'; payload: Workout[] | null } | 
     { type: 'CREATE_WORKOUT'; payload: Workout } | 
     { type: 'DELETE_WORKOUT'; payload: Workout };
 
