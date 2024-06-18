@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useReducer, ReactNode, Dispatch, act } from 'react';
+import React, { createContext, useReducer, ReactNode, Dispatch } from 'react';
 import { Workout } from '@/types/types';
 
 // Define the state and action types
@@ -8,7 +8,7 @@ interface State {
   workouts: Workout[] | null;
 }
 
-type Action = { type: 'SET_WORKOUTS'; payload: Workout[] } | 
+type Action = { type: 'SET_WORKOUTS'; payload: Workout[] | null } | 
     { type: 'CREATE_WORKOUT'; payload: Workout } | 
     { type: 'DELETE_WORKOUT'; payload: Workout };
 
