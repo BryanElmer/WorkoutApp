@@ -1,16 +1,30 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSignup } from '@/hooks/useSignup';
+import { useAuthContext } from '@/hooks/useAuthContext';
+import { useRouter } from 'next/navigation';
+
 import styles from './signup.module.css';
 
 const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { signup, isLoading, error } = useSignup();
+
+  const { state: userState } = useAuthContext();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (userState.user) {
+      router.push('/');
+    }
+  }, [userState, router]);
 
   const handleSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
 
-    console.log(email, password);
+    await signup(email, password);
   }
 
   return (
@@ -29,7 +43,8 @@ const Signup = () => {
         value={password}
       />
 
-      <button onClick={handleSubmit}>Sign Up</button>
+      <button disabled={isLoading} onClick={handleSubmit}>Sign Up</button>
+      {error && <div className={styles.errorMsg}>{error}</div>}
     </form>
   )
 }

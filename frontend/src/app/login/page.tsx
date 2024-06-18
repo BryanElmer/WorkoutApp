@@ -1,16 +1,31 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from "next/navigation";
+import { useAuthContext } from "@/hooks/useAuthContext";
+
 import styles from './login.module.css';
+import { useLogin } from '@/hooks/useLogin';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const { login, isLoading, error } = useLogin();
+  const { state: userState } = useAuthContext();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (userState.user) {
+      router.push('/');
+    }
+  }, [userState, router]);
+
   const handleSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
 
-    console.log(email, password);
+    await login(email, password);
+    router.push('/');
   }
 
   return (
@@ -32,7 +47,8 @@ const Login = () => {
               value={password}
             />
 
-            <button onClick={handleSubmit}>Log in</button>
+            <button disabled={isLoading} onClick={handleSubmit}>Log in</button>
+            {error && <div className={styles.errorMsg}>{error}</div>}
           </form>
         </div>
         
