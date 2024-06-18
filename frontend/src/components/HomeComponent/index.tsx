@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import { Workout } from "../../types/types";
 import { useWorkoutsContext } from "@/hooks/useWorkoutsContext";
+import { useAuthContext } from "@/hooks/useAuthContext";
 
 import WorkoutDetails from "../WorkoutDetails/index";
 import WorkoutForm from "../WorkoutForm/index";
@@ -10,12 +10,16 @@ import styles from "./index.module.css";
 
 const Home = () => {
   const {state, dispatch} = useWorkoutsContext();
-  const apiUrl = process.env.API_URI;
+  const { state: userState } = useAuthContext();
 
   useEffect(() => {
     const fetchWorkouts = async () => {
       try {
-        const response = await fetch('http://localhost:4000/api/workouts');
+        const response = await fetch('http://localhost:4000/api/workouts', {
+          headers: {
+            'Authorization': `Bearer ${userState.user?.token}`
+          }
+        });
         const json = await response.json();
       
         if (response.ok) {
@@ -28,8 +32,10 @@ const Home = () => {
       }
     };
 
-    fetchWorkouts();
-  }, [dispatch]); // 2nd arg if empty only render once when first rendered
+    if (userState) {
+      fetchWorkouts();
+    }
+  }, [dispatch, userState]); // 2nd arg if empty only render once when first rendered
 
   return (
     <div className={styles.home}>

@@ -1,5 +1,6 @@
 import { Workout } from "../../types/types";
 import { useWorkoutsContext } from "@/hooks/useWorkoutsContext";
+import { useAuthContext } from "@/hooks/useAuthContext";
 
 import { formatDistanceToNow } from 'date-fns/formatDistanceToNow';
 
@@ -12,10 +13,18 @@ interface WorkoutDetailsProps {
 
 const WorkoutDetails:React.FC<WorkoutDetailsProps> = ({ workout }) => {
   const {state, dispatch} = useWorkoutsContext();
+  const { state: userState } = useAuthContext();
 
   const handleClick = async () => {
+    if (!userState.user) {
+      return;
+    }
+
     const response = await fetch('http://localhost:4000/api/workouts/' + workout._id, {
       method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${userState.user?.token}`
+      }
     });
     const json = await response.json();
 
