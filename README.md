@@ -1,1 +1,1 @@
-# MERNapp
+# Workout App development repository
